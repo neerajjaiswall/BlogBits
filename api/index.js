@@ -20,7 +20,7 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
     // useCreateIndex: true,
-    // useFindAndModify:true,
+    // useFindAndModify:true
   })
   .then(console.log("Connected to MongoDB"))
   .catch((err) => console.log(err));
@@ -44,10 +44,12 @@ app.use("/api/users", userRoute);
 app.use("/api/posts", postRoute);
 app.use("/api/categories", categoryRoute);
 
-// app.use("/", (req, res) => {
-//   console.log("Hey this is main URL");
-// });
+app.use(express.static(path.join(__dirname, "/client/build")));
 
-app.listen("5000", () => {
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
+});
+
+app.listen(process.env.PORT || 5000, () => {
   console.log("Backend is running.");
 });
